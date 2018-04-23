@@ -6,7 +6,7 @@ var Tank;
             this._position = new Pos(tile.x + Tank.tileWidth / 2, tile.y + Tank.tileWidth / 2);
             this._angle = Math.random() * 360;
             this._color = color;
-            this.score = 0;
+            this._shots = 0;
         }
         static getRadius() { return Tank.radius; }
         static getBarrelWidth() { return Tank.barrelWidth; }
@@ -19,6 +19,8 @@ var Tank;
         get position() { return this._position; }
         get angle() { return this._angle; }
         get color() { return this._color; }
+        get shots() { return this._shots; }
+        set shots(shots) { this._shots = shots; }
         // move tank formward or backward | 1 - forward, 2 - backward
         move(direction) {
             // get new position

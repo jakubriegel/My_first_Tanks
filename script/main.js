@@ -42,7 +42,10 @@ class Game {
             this.redTank.move(2);
         // '/'
         if (this.keys[191]) {
-            this.fire(this.redTank.position, this.redTank.angle);
+            if (this.redTank.shots < 3) {
+                this.fire(this.redTank.position, this.redTank.angle, this.redTank.color);
+                this.redTank.shots++;
+            }
             this.keys[191] = false;
         }
         // a
@@ -59,7 +62,10 @@ class Game {
             this.blueTank.move(2);
         // 'q'
         if (this.keys[81]) {
-            this.fire(this.blueTank.position, this.blueTank.angle);
+            if (this.blueTank.shots < 3) {
+                this.fire(this.blueTank.position, this.blueTank.angle, this.blueTank.color);
+                this.blueTank.shots++;
+            }
             this.keys[81] = false;
         }
         // make sure any Tank.Tank is not 'in' the wall
@@ -67,10 +73,15 @@ class Game {
             this.redTank.moveBack();
         while (!this.arena.validatePosition(this.blueTank.position, Tank.Tank.getRadius()))
             this.blueTank.moveBack();
-        // delete old bullets
+        // delete old bullets | using for in, because splice() works on indexes
         for (let i in this.bullets)
-            if (this.bullets[i].duration > Bullet.Bullet.maxDuration)
-                this.bullets.splice(+i, 1); // + is paring to number
+            if (this.bullets[i].duration > Bullet.Bullet.maxDuration) {
+                if (this.bullets[i].color == this.redTank.color)
+                    this.redTank.shots--;
+                else
+                    this.blueTank.shots--;
+                this.bullets.splice(+i, 1); // + is paring string to number
+            }
         // move bullets
         for (let bullet of this.bullets) {
             bullet.move();
@@ -78,12 +89,12 @@ class Game {
                 // pushing bullet back to allowed area
                 while (!this.arena.validatePosition(bullet.position, Bullet.Bullet.getRadius()))
                     bullet.moveBack();
-                // reflecing bullet [will be iproved]
+                // reflecing bullet [may be improved]
                 if (!this.arena.getEdge(bullet.position)) {
                     bullet.angle = (180 - bullet.angle) % 360;
                 }
                 else {
-                    bullet.angle = (90 - bullet.angle) % 360;
+                    bullet.angle = 360 - bullet.angle;
                 }
             }
         }
@@ -96,29 +107,24 @@ class Game {
                 a = Util.getVector(bullet.position, Bullet.Bullet.getRadius(), angle);
                 if (Pos.calculateDistance(a, this.redTank.position) <= Tank.Tank.getRadius()
                     || Pos.calculateDistance(a, this.blueTank.position) <= Tank.Tank.getRadius()) {
-                    // end game [will be improved]
+                    // end the game
                     window.clearInterval(this._interval);
-                    //window.alert("End of the game!");
                     window.location.reload();
                 }
             }
         }
     }
     // fire a bullet from selected tank
-    fire(position, angle) {
-        this.bullets.push(new Bullet.Bullet(Util.getVector(position, Tank.Tank.getRadius() + 1, angle), angle));
+    fire(position, angle, color) {
+        this.bullets.push(new Bullet.Bullet(Util.getVector(position, Tank.Tank.getRadius() + 1, angle), angle, color));
     }
 }
 // start the app
 function start() {
     let game = new Game();
-    addEventListener('keydown', function (event) {
-        game.processKey(event);
-    });
-    addEventListener('keyup', function (event) {
-        game.processKey(event);
-    });
-    game.interval = setInterval(function () { game.update(); }, 33);
+    addEventListener('keydown', (event) => game.processKey(event));
+    addEventListener('keyup', (event) => game.processKey(event));
+    game.interval = setInterval(() => game.update(), 33);
 }
 // initialize app
 window.onload = start;

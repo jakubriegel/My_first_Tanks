@@ -2,12 +2,14 @@ var Bullet;
 (function (Bullet_1) {
     // class for bullets
     class Bullet {
-        constructor(position, angle) {
+        constructor(position, angle, color) {
             this.position = position;
             this.angle = angle;
+            this._color = color;
             this._duration = 0;
         }
         get duration() { return this._duration; }
+        get color() { return this._color; }
         static setRadius() { Bullet.radius = Tank.Tank.getBarrelWidth() / 2; }
         static getRadius() { return Bullet.radius; }
         get position() { return this._position; }
@@ -30,6 +32,6 @@ var Bullet;
         }
     }
     Bullet.velocity = 4;
-    Bullet.maxDuration = 500;
+    Bullet.maxDuration = 400;
     Bullet_1.Bullet = Bullet;
 })(Bullet || (Bullet = {}));

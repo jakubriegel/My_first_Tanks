@@ -2,9 +2,12 @@ namespace Bullet{
     // class for bullets
     export class Bullet{
         private static readonly velocity: number = 4;
-        public static readonly maxDuration: number = 500;
+        public static readonly maxDuration: number = 400;
         private _duration: number;
         get duration(): number { return this._duration; }
+
+        private _color: string;
+        get color(): string { return this._color; }
 
         private static radius: number;
         public static setRadius(): void { Bullet.radius = Tank.Tank.getBarrelWidth() / 2; }
@@ -25,9 +28,10 @@ namespace Bullet{
             this.revertY = y;
         }
         
-        public constructor(position: Pos, angle: number){
+        public constructor(position: Pos, angle: number, color: string){
             this.position = position;
             this.angle = angle;
+            this._color = color;
             this._duration = 0;
         }
 

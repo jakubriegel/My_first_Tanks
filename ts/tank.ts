@@ -23,16 +23,18 @@ namespace Tank{
         
         private _color: string;
         get color(): string { return this._color; }
-        private weapon: object;
-        private score: number;
+
+        // number of active bullets
+        private _shots: number;
+        get shots(): number { return this._shots; }
+        set shots(shots: number) { this._shots = shots; }
     
         public constructor(tile: Pos, color: string){
             this._position = new Pos(tile.x + Tank.tileWidth/2, tile.y + Tank.tileWidth/2);
             this._angle = Math.random() * 360;
             
             this._color = color;
-            this.score = 0;
-            
+            this._shots = 0;      
         }
         
         // move tank formward or backward | 1 - forward, 2 - backward

@@ -1,4 +1,5 @@
 namespace Arena {
+
     // class for map
     export class Arena{
         private _canvas: HTMLCanvasElement;
@@ -59,8 +60,8 @@ namespace Arena {
                 // draw if tile will be placed | the number on the right is probabilty
                 if(Math.random() <= .6)
                     // check if tile is not going beyond arena
-                    if(x >= 0 && x < this.height)
-                        if(y >= 0 && y < this.height){
+                    if(x >= 0 && x + this.tileWidth < this.height)
+                        if(y >= 0 && y + this.tileWidth < this.height){
                             // check if the seleted position is not taken
                             for(let i of this.tiles) if(i.x == x && i.y == y) return false;
                             return true;
@@ -81,7 +82,7 @@ namespace Arena {
         // draw new frame
         public redraw(redTank: Tank.Tank, blueTank: Tank.Tank, bullets: Bullet.Bullet[]): void {
             this.context.fillStyle = 'white';
-            for(let tile of this.tiles) this.context.fillRect(tile.x, tile.y, this.tileWidth, this.tileWidth); // +1 to avoid blank borders
+            for(let tile of this.tiles) this.context.fillRect(tile.x, tile.y, this.tileWidth, this.tileWidth); 
 
             for(let bullet of bullets) this.drawBullet(bullet);
 
@@ -115,7 +116,7 @@ namespace Arena {
         private drawBullet(bullet: Bullet.Bullet): void {
             this.context.beginPath();
             this.context.arc(bullet.position.x, bullet.position.y, Bullet.Bullet.getRadius(), 0, 2 * Math.PI);
-            this.context.fillStyle = 'green';
+            this.context.fillStyle = bullet.color;
             this.context.fill();
             this.context.closePath();
         }
@@ -136,8 +137,8 @@ namespace Arena {
             }
             return true;
         }
-        
-        // get edge wich is right next to selected position of bullet | true - x, false - y
+
+        // get edge wich is right next to selected position of bullet | true - x, false - y | used on workshop
         public getEdge(position: Pos): boolean{
             let a: Pos;
             // check all points on bullets perimeter
@@ -154,6 +155,31 @@ namespace Arena {
                 }
             }
         }
+
+        // getEdge() with better performance
+        /*
+        public getEdge(position: Pos, angle: number): boolean {
+            let a: Pos;
+            // check all points on bullets perimeter
+            for(let angle = 0; angle < 360; angle++){
+                a = Util.getVector(position, Bullet.Bullet.getRadius(), angle);
+        
+                for(let tile of this.tiles) if(Util.belongsToSquare(a, tile, this.tileWidth)) if((a, angle) => {
+                    let b = Util.getVector(a, 1, angle);
+                    for(let i of this.tiles) if(Util.belongsToSquare(b, i, this.tileWidth)) return false;
+                    return true;
+                }) {
+                    if((a.x > tile.x-1 && a.x < tile.x+1) || (a.x > tile.x+this.tileWidth-1 && a.x < tile.x+this.tileWidth+1)){
+                        return true;
+                    }
+                    if((a.y > tile.y-1 && a.y < tile.y+1) || (a.y > tile.y+this.tileWidth-1 && a.y < tile.y+this.tileWidth+1)){
+                        return false;
+                    }
+                }
+            }
+
+        }
+        */
 
     }
 }
