@@ -21,20 +21,15 @@ var Tank;
         get color() { return this._color; }
         get shots() { return this._shots; }
         set shots(shots) { this._shots = shots; }
-        // move tank formward or backward | 1 - forward, 2 - backward
+        // move tank formward or backward | true - forward, false - backward
         move(direction) {
-            // get new position
-            let vec = Util.getVector(this.position, Tank.velocity, this.angle);
-            switch (direction) {
-                case 1: // forward
-                    this._position = vec;
-                    this.lastMove = -1; // neccesary for Tank.moveBack()
-                    break;
-                case 2: // backward
-                    this.position.x -= vec.x - this.position.x; // getting displacement and subtracting it from current position
-                    this.position.y -= vec.y - this.position.y;
-                    this.lastMove = 1; // neccesary for Tank.moveBack()
-                    break;
+            if (direction) { // forward
+                this._position = Util.getVector(this.position, Tank.velocity, this.angle);
+                this.lastMove = -1; // neccesary for Tank.moveBack()
+            }
+            else { // backward
+                this._position = Util.getVector(this.position, -Tank.velocity, this.angle);
+                this.lastMove = 1; // neccesary for Tank.moveBack()
             }
         }
         // undo part of move | neccesary for making sure tank is not 'in' the wall

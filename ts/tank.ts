@@ -37,20 +37,15 @@ namespace Tank{
             this._shots = 0;      
         }
         
-        // move tank formward or backward | 1 - forward, 2 - backward
-        public move(direction: number){
-            // get new position
-            let vec = Util.getVector(this.position, Tank.velocity, this.angle);
-            switch(direction){
-                case 1: // forward
-                    this._position = vec;
-                    this.lastMove = -1; // neccesary for Tank.moveBack()
-                    break;
-                case 2: // backward
-                    this.position.x -= vec.x - this.position.x; // getting displacement and subtracting it from current position
-                    this.position.y -= vec.y - this.position.y;
-                    this.lastMove = 1; // neccesary for Tank.moveBack()
-                    break;
+        // move tank formward or backward | true - forward, false - backward
+        public move(direction: boolean): void{
+            if(direction) { // forward
+                this._position = Util.getVector(this.position, Tank.velocity, this.angle);
+                this.lastMove = -1; // neccesary for Tank.moveBack()
+            }
+            else { // backward
+                this._position = Util.getVector(this.position, -Tank.velocity, this.angle);
+                this.lastMove = 1; // neccesary for Tank.moveBack()
             }
         }
     

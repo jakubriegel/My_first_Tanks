@@ -46,34 +46,36 @@ class Game{
         // left arrow
         if(this.keys[37]) this.redTank.rotate(false);
         // up arrow
-        if(this.keys[38]) this.redTank.move(1);
+        if(this.keys[38]) this.redTank.move(true);
         // right arrow
         if(this.keys[39]) this.redTank.rotate(true);
         // down arrow
-        if(this.keys[40]) this.redTank.move(2);
+        if(this.keys[40]) this.redTank.move(false);
         // '/'
         if(this.keys[191]){
             if(this.redTank.shots < 3){
                 this.fire(this.redTank.position, this.redTank.angle, this.redTank.color);
                 this.redTank.shots++;
             }
+            // switching the key off, because firing is not a continuous action
             this.keys[191] = false;
         }
 
         // a
         if(this.keys[65]) this.blueTank.rotate(false);
         // w
-        if(this.keys[87]) this.blueTank.move(1);
+        if(this.keys[87]) this.blueTank.move(true);
         // d
         if(this.keys[68]) this.blueTank.rotate(true);
         // s
-        if(this.keys[83]) this.blueTank.move(2);
+        if(this.keys[83]) this.blueTank.move(false);
         // 'q'
         if(this.keys[81]) {
             if(this.blueTank.shots < 3) {
                 this.fire(this.blueTank.position, this.blueTank.angle, this.blueTank.color);
                 this.blueTank.shots++;
             }
+            // switching the key off, because firing is not a continuous action
             this.keys[81] = false;
         }
 
