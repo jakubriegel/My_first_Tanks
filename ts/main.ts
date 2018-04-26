@@ -69,7 +69,7 @@ class Game{
         if(this.keys[68]) this.blueTank.rotate(true);
         // s
         if(this.keys[83]) this.blueTank.move(false);
-        // 'q'
+        // q
         if(this.keys[81]) {
             if(this.blueTank.shots < 3) {
                 this.fire(this.blueTank.position, this.blueTank.angle, this.blueTank.color);

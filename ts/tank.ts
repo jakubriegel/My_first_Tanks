@@ -58,7 +58,10 @@ namespace Tank{
         public rotate(direction: boolean): void{ 
             if(direction) this._angle += 4;
             else this._angle -= 4;
+            
+            // make sure the agle is within <0, 360)
             if(this.angle >= 360) this._angle = this.angle % 360;
+            else if(this.angle < 0) this._angle = 360 + this._angle;
         }
     }
 }

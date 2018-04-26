@@ -2,6 +2,13 @@ var Bullet;
 (function (Bullet_1) {
     // class for bullets
     class Bullet {
+        /* private revertX: number;
+         private revertY: number;
+         public setReverts(x: number, y: number){
+             this.revertX = x;
+             this.revertY = y;
+         }
+         */
         constructor(position, angle, color) {
             this.position = position;
             this.angle = angle;
@@ -16,10 +23,6 @@ var Bullet;
         set position(position) { this._position = position; }
         get angle() { return this._angle; }
         set angle(angle) { this._angle = angle; }
-        setReverts(x, y) {
-            this.revertX = x;
-            this.revertY = y;
-        }
         // move bulet forward
         move() {
             this.position = Util.getVector(this.position, Bullet.velocity, this.angle);
